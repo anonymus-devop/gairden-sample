@@ -1,12 +1,11 @@
 /**
- * Calls the function that Reads light
+ * Reads light
  */
+// Calls the function that Reads light
 input.onButtonPressed(Button.A, function () {
     readT()
 })
-/**
- * Reads temperature
- */
+// Reads temperature
 function readT () {
     if (input.temperature() < 18) {
         basic.showLeds(`
@@ -57,24 +56,60 @@ function readL () {
     }
     basic.pause(5000)
 }
-/**
- * Reads light
- */
-/**
- * Calls the function that Reads light
- */
+input.onButtonPressed(Button.AB, function () {
+    readH()
+})
 input.onButtonPressed(Button.B, function () {
     readL()
 })
+// Calls the function that Reads light
+function readH () {
+    if (humidity < 300) {
+        for (let index = 0; index < 4; index++) {
+            basic.showLeds(`
+                # . # . #
+                # . # . #
+                . # . # .
+                . # . # .
+                . . . . .
+                `)
+            basic.showLeds(`
+                . # . # .
+                . # . # .
+                # . # . #
+                # . # . #
+                . . . . .
+                `)
+        }
+    } else if (humidity >= 300 && humidity <= 700) {
+        basic.showLeds(`
+            . # . . .
+            # # # . .
+            # # # . #
+            . # . # .
+            . . # . .
+            `)
+    } else {
+        basic.showLeds(`
+            . . . . .
+            . # . . #
+            # # # . #
+            # # # . .
+            # # # . #
+            `)
+    }
+}
 input.onLogoEvent(TouchButtonEvent.Pressed, function () {
     music.play(music.stringPlayable("- - A G F E - - ", 140), music.PlaybackMode.UntilDone)
     serial.writeLine("Bye")
     basic.showString("Byeee! ")
 })
 let temp = 0
+let humidity = 0
 let light2 = 0
-music.play(music.stringPlayable("- - E F G A - - ", 140), music.PlaybackMode.UntilDone)
+music.play(music.stringPlayable("E E F G G F E D ", 140), music.PlaybackMode.UntilDone)
 basic.forever(function () {
     light2 = input.lightLevel()
     temp = input.temperature()
+    humidity = pins.analogReadPin(AnalogPin.P0)
 })
